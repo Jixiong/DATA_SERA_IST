@@ -5,6 +5,7 @@ library("zoo")
 library("rgdal")
 library("ggplot2")
 library("ggmap")
+library("oce")
 
 GPS <- fread("DATA_Debut/GPS.csv", header = FALSE, sep=";")
 ch0 <- fread("DATA_Debut/ch0.csv", header = FALSE, sep=";")
@@ -47,6 +48,20 @@ GPS_ch0 <- DATA_GPS_CH_Link[,c("lat", "lon", "V_ch0")]
 GPS_ch1 <- DATA_GPS_CH_Link[,c("lat", "lon", "V_ch1")]
 GPS_ch2 <- DATA_GPS_CH_Link[,c("lat", "lon", "V_ch2")]
 
-source("Lat_Lon_to_x_y.R")
+xy_ch0 <- lonlat2map(GPS_ch0[,2], GPS_ch0[,1], projection = "+proj=tmerc")
+xy_ch0 <- data.frame(xy_ch0)
+xy_ch1 <- lonlat2map(GPS_ch1[,2], GPS_ch1[,1], projection = "+proj=tmerc")
+xy_ch1 <- data.frame(xy_ch1)
+xy_ch2 <- lonlat2map(GPS_ch2[,2], GPS_ch2[,1], projection = "+proj=tmerc")
+xy_ch2 <- data.frame(xy_ch2)
 
-GPS_ch0_m <- traitementGPS(GPS_ch0)
+test <- xy_ch1[,2]+100
+test <- data.frame(test)
+
+xy_ch1[,2] <- test
+
+xy_ch0 <- map2lonlat(xy_ch0)
+xy_ch1 <- map2lonlat(xy_ch1)
+
+xy_ch0 <- data.frame(xy_ch0)
+xy_ch1 <- data.frame(xy_ch1)
